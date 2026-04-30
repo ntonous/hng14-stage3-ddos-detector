@@ -1,0 +1,48 @@
+# ===============================
+# HNG Stage 3 DDOS Detector Config
+# ===============================
+
+# NGINX JSON access log path
+log_file: /var/lib/docker/volumes/hng14-stage3-ddos-detector_HNG-nginx-logs/_data/hng-access.log
+
+# Sliding window (seconds)
+window_seconds: 60
+
+# Rolling baseline learning window (minutes)
+baseline_minutes: 30
+
+# Recalculate baseline every X seconds
+recalc_interval: 60
+
+# Detection thresholds
+zscore_threshold: 3.0
+multiplier_threshold: 5
+
+# If an IP generates 4xx/5xx above this multiplier, tighten rules
+error_multiplier_threshold: 3
+
+# Ban schedule (minutes)
+first_ban_minutes: 10
+second_ban_minutes: 30
+third_ban_minutes: 120
+permanent_ban_after: 4
+
+# Default ban used by simplified engine
+ban_minutes: 10
+
+# Dashboard refresh seconds
+dashboard_refresh: 3
+
+# Audit log path
+audit_log: /home/azureuser/hng14-stage3-ddos-detector/logs/audit.log
+
+# Slack webhook
+# Replace with your real webhook locally.
+# Do NOT commit real secrets to GitHub.
+slack_webhook: YOUR_SLACK_WEBHOOK_URL
+
+# Dashboard public URL
+dashboard_url: http://metrics.ntscomputers.dpdns.org
+
+# Server IP
+server_ip: 52.233.247.107
