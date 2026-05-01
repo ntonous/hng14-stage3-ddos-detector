@@ -1,6 +1,16 @@
+# Python
 venv/
 __pycache__/
 *.pyc
+
+# Logs
 logs/
 *.log
+
+# Env files
 .env
+
+# Backup / junk
+*.zip
+*.backup
+*.yml.backup

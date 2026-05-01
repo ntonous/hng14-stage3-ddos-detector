@@ -2,47 +2,70 @@
 # HNG Stage 3 DDOS Detector Config
 # ===============================
 
-# NGINX JSON access log path
-log_file: /var/lib/docker/volumes/hng14-stage3-ddos-detector_HNG-nginx-logs/_data/hng-access.log
+# -------------------------------
+# LOG SETTINGS
+# -------------------------------
+log_file: "/var/log/nginx/hng-access.log"
 
 # Sliding window (seconds)
 window_seconds: 60
 
-# Rolling baseline learning window (minutes)
-baseline_minutes: 30
+# -------------------------------
+# BASELINE SETTINGS
+# -------------------------------
+baseline:
+  window_minutes: 30          # rolling learning window
+  recalc_interval: 60         # seconds
+  min_samples: 10             # minimum samples before trusting baseline
 
-# Recalculate baseline every X seconds
-recalc_interval: 60
+  # Floor values (prevents zero / unstable baseline)
+  floor_mean: 1
+  floor_std: 0.5
 
-# Detection thresholds
-zscore_threshold: 3.0
-multiplier_threshold: 5
+# -------------------------------
+# DETECTION THRESHOLDS
+# -------------------------------
+detection:
+  zscore_threshold: 3.0
+  multiplier_threshold: 5
 
-# If an IP generates 4xx/5xx above this multiplier, tighten rules
-error_multiplier_threshold: 3
+# Error surge tightening
+error_detection:
+  enabled: true
+  multiplier: 3
 
-# Ban schedule (minutes)
-first_ban_minutes: 10
-second_ban_minutes: 30
-third_ban_minutes: 120
-permanent_ban_after: 4
+# -------------------------------
+# BLOCKING SETTINGS
+# -------------------------------
+blocking:
+  # Backoff schedule in seconds:
+  # 10min → 30min → 2hr → permanent (0 = permanent)
+  backoff_schedule: [600, 1800, 7200, 0]
+  max_bans: 4
 
-# Default ban used by simplified engine
-ban_minutes: 10
+# -------------------------------
+# DASHBOARD SETTINGS
+# -------------------------------
+dashboard:
+  host: "0.0.0.0"
+  port: 9000
+  refresh_seconds: 3
+  public_url: "http://metrics.ntscomputers.dpdns.org"
 
-# Dashboard refresh seconds
-dashboard_refresh: 3
+# -------------------------------
+# SERVER INFO
+# -------------------------------
+server:
+  ip: "52.233.247.107"
 
-# Audit log path
-audit_log: /home/azureuser/hng14-stage3-ddos-detector/logs/audit.log
+# -------------------------------
+# SLACK CONFIG (SECURE)
+# -------------------------------
+slack:
+  webhook_url: ""     # ⚠️ MUST be set via environment variable
+  enabled: true
 
-# Slack webhook
-# Replace with your real webhook locally.
-# Do NOT commit real secrets to GitHub.
-slack_webhook: YOUR_SLACK_WEBHOOK_URL
-
-# Dashboard public URL
-dashboard_url: http://metrics.ntscomputers.dpdns.org
-
-# Server IP
-server_ip: 52.233.247.107
+# -------------------------------
+# AUDIT LOG
+# -------------------------------
+audit_log: "/app/logs/audit.log"
