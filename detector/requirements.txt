@@ -2,3 +2,4 @@ pyyaml
 psutil
 flask
 requests
+psutil

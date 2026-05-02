@@ -29,29 +29,25 @@ services:
     build: ./detector
     container_name: hng-detector
     restart: unless-stopped
-
-    # REQUIRED for iptables to work
+    # host networking required so iptables rules affect the HOST, not just container
     network_mode: host
-
-    # REQUIRED for iptables permissions
+    # NET_ADMIN required for iptables
     cap_add:
       - NET_ADMIN
-
+    privileged: true
     volumes:
       - HNG-nginx-logs:/var/log/nginx:ro
-      - ./detector/config.yaml:/app/config.yaml
-
+      - ./logs:/app/logs
     environment:
       - SLACK_WEBHOOK=${SLACK_WEBHOOK}
-
     depends_on:
       - nginx
 
 volumes:
   HNG-nginx-logs:
+    name: HNG-nginx-logs
   nextcloud_data:
 
 networks:
   hng-network:
     driver: bridge
-    

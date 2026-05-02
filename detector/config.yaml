@@ -1,0 +1,23 @@
+log_file: "/var/log/nginx/hng-access.log"
+window_seconds: 60
+baseline_minutes: 30
+recalc_interval: 60
+min_samples: 10
+floor_mean: 1.0
+floor_std: 0.5
+zscore_threshold: 3.0
+multiplier_threshold: 5.0
+error_multiplier_threshold: 3.0
+tightened_zscore: 2.0
+tightened_multiplier: 3.0
+ban_schedule:
+  - 600
+  - 1800
+  - 7200
+  - -1
+dashboard:
+  host: "0.0.0.0"
+  port: 9000
+audit_log: "/app/logs/audit.log"
+slack_webhook: ""
+server_ip: "52.233.247.107"
